@@ -11,7 +11,6 @@ namespace TaskArchive.App.Context.Roles
         public Admin() : base(Roles.User)
         {
         }
-
         public Admin(User user)
         {
             Name = user.Name;

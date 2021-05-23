@@ -1,0 +1,71 @@
+﻿<Window x:Class="TaskArchive.App.Views.AuthWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="clr-namespace:TasksArchive.App.Model"
+    xmlns:viewmodel="clr-namespace:TaskArchive.App.ViewModel"
+        Title="AuthWindow"
+    Width="387"
+    Height="200"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+
+    <Window.DataContext>
+        <viewmodel:AuthViewModel />
+    </Window.DataContext>
+
+    <Window.Resources>
+        <ObjectDataProvider
+            x:Key="DataBase"
+            MethodName="GetInstance"
+            ObjectType="{x:Type model:DataBase}" />
+    </Window.Resources>
+
+    <Grid>
+        <Grid Background="{StaticResource LightBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.4*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="{StaticResource MediumBaseBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Content="Login:"
+                    FontSize="17px" 
+                    />
+                <TextBox
+                    x:Name="LoginBox"
+                    Grid.Column="1"
+                    Background="{StaticResource LightBaseBrush}"
+                    Text="{Binding Login}" />
+            </Grid>
+            <Grid Grid.Row="1" Background="{StaticResource MediumBaseBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Content="Password:"
+                    FontSize="17px" />
+                <PasswordBox
+                    x:Name="PasswordBox"
+                    Grid.Column="1"
+                    Background="{StaticResource LightBaseBrush}"
+                    PasswordChar="*" />
+            </Grid>
+            <Button
+                Grid.Row="2"
+                Command="{Binding AuthCommand}"
+                CommandParameter="{Binding ElementName=PasswordBox}"
+                Content="Вход"
+                Style="{StaticResource BaseButton}"/>
+        </Grid>
+    </Grid>
+</Window>

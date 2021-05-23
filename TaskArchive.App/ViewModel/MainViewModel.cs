@@ -97,17 +97,7 @@ namespace TasksArchive.ViewModel
                 });
             }
         }
-        public ICommand StatusLogic
-        {
-            get
-            {
-                return new DelegateCommand<Tasks>(obj =>
-                {
-                    int a = 5;
 
-                }, (Tasks) => Tasks != null);
-            }
-        }
         public ICommand Export
         {
             get

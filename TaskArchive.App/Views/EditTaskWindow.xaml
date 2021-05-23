@@ -143,7 +143,7 @@
                                                         <ColumnDefinition Width="1*" />
                                                     </Grid.ColumnDefinitions>
 
-                                                    
+
 
                                                     <Button
                                                         Grid.Column="1"
@@ -166,22 +166,6 @@
 
 
                             </UniformGrid>
-
-                            <!--пока что не знаю, надо ли будет в бд дата создания таска или все равно-->
-                            <!--<UniformGrid Background="{StaticResource DarkBrush}" Columns="2">
-                                <TextBlock
-                                    Margin="10"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource BaseText}"
-                                    Text="Опубликовано: " />
-
-                                <TextBlock
-                                    Margin="10"
-                                    VerticalAlignment="Center"
-                                    Style="{StaticResource BaseText}"
-                                    Text="{Binding TasksInfo.PublishData, StringFormat={}{0:dd.MM.yyyy}}"
-                                    TextWrapping="Wrap" />
-                            </UniformGrid>-->
 
 
                             <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">

@@ -6,7 +6,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:model="clr-namespace:TasksArchive.App.Model"
     xmlns:viewmodel="clr-namespace:TasksArchive.App.ViewModel"
-    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
     Title="EditTasksWindow"
     Width="387"
     Height="600"
@@ -200,6 +199,18 @@
                                     Style="{StaticResource BaseTextBox}"
                                     Text="{Binding TasksInfo.Comment, UpdateSourceTrigger=PropertyChanged}"
                                     TextWrapping="Wrap" />
+                            </UniformGrid>
+                            <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
+                                <TextBlock
+                                    Margin="10"
+                                    VerticalAlignment="Center"
+                                    Style="{StaticResource BaseText}"
+                                    Text="Статус: " />
+                                <StackPanel>
+                                    <CheckBox Content="Готово" CommandParameter="Готово" Command="{Binding StatusLogic, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox Content="В процессе" CommandParameter="В процессе" Command="{Binding StatusLogic, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <CheckBox Content="На этапе подготовки" CommandParameter="На этапе подготовки" Command="{Binding StatusLogic, UpdateSourceTrigger=PropertyChanged}"/>
+                                </StackPanel>
                             </UniformGrid>
 
 

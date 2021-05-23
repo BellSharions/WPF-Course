@@ -28,6 +28,9 @@ namespace TasksArchive.Model
         public double Size { get; set; }
         public DateTime PublishData { get; set; }
         public string Comment { get; set; }
+        public int Status { get; set; }
+        public string StatusText { get; set; }
+        public enum StatusCheck { Ready = 1 , InProgress = 2, OnHold = 3 }
         public ObservableCollection<string> Images { get; set; } = new ObservableCollection<string>();
 
         

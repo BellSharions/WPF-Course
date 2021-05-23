@@ -32,18 +32,6 @@ namespace TasksArchive.ViewModel
             }
         }
 
-        
-
-        //public string Name { get => SelectedTasks.Name; set { SelectedTasks.Name = value; RaisePropertyChanged(nameof(Name)); } }
-        //public string Channel { get; set; }
-        //public string Descrition { get => SelectedTasks.Descrition; set { SelectedTasks.Descrition = value; RaisePropertyChanged(nameof(Descrition)); } }
-        //public string Tematic { get; set; }
-        //public ObservableCollection<KeyWordItem> KeyWords { get; set; } = new ObservableCollection<KeyWordItem>();
-        //public double Size { get; set; }
-        //public DateTime PublishData { get; set; }
-        //public string Comment { get; set; }
-        //public ObservableCollection<string> Images { get; set; } = new ObservableCollection<string>();
-
 
         private string _SearchText { get; set; }
         public string SearchText
@@ -93,7 +81,43 @@ namespace TasksArchive.ViewModel
             TaskssView = CollectionViewSource.GetDefaultView(Taskss);
 
         }
+        public ICommand Import
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    Taskss = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
+                    Taskss.CollectionChanged += (s, e) =>
+                    {
+                        File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
+                    };
+                    BindingOperations.EnableCollectionSynchronization(Taskss, new object());
+                    TaskssView = CollectionViewSource.GetDefaultView(Taskss);
+                });
+            }
+        }
+        public ICommand StatusLogic
+        {
+            get
+            {
+                return new DelegateCommand<Tasks>(obj =>
+                {
+                    int a = 5;
 
+                }, (Tasks) => Tasks != null);
+            }
+        }
+        public ICommand Export
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
+                });
+            }
+        }
         public ICommand Sort
         {
             get

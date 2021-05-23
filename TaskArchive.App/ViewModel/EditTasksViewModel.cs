@@ -45,6 +45,16 @@ namespace TasksArchive.App.ViewModel
             }
         }
 
+        public DelegateCommand<string> StatusLogic
+        {
+            get
+            {
+                return new DelegateCommand<string>(obj =>
+                {
+                    TasksInfo.StatusText = obj;
+                });
+            }
+        }
         public DelegateCommand<Window> Save
         {
             get

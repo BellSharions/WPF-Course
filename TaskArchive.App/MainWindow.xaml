@@ -44,8 +44,34 @@
                 <RowDefinition Height="0.4*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-
-            <TextBlock Text="Пока пусть так буде, тут кнопочки для входа сделать" Background="{StaticResource MediumBaseBrush}"/>
+            
+            
+            <Grid Background="White">
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="110" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.ColumnSpan="2">
+                        <Button
+                        Command="{Binding Import}"
+                        Content="Импорт"
+                        Style="{StaticResource BaseButton}" Margin="0,0,140,0" />
+                        <Button
+                        Command="{Binding Export}"
+                        Content="Экспорт"
+                        Style="{StaticResource BaseButton}" Margin="140,0,0,0" />
+                    </Grid>
+                </Grid>
+            </Grid>
 
 
             <Grid Grid.Row="1">
@@ -160,7 +186,7 @@
                         <Style TargetType="ScrollViewer">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=DataContext}" Value="{x:Null}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Setter Property="Visibility" Value="Visible" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -341,6 +367,20 @@
                                             VerticalAlignment="Center"
                                             Style="{StaticResource BaseText}"
                                             Text="{Binding Comment}"
+                                            TextWrapping="Wrap" />
+                                    </UniformGrid>
+                                    <UniformGrid Background="{StaticResource MediumBrush}" Columns="2">
+                                        <TextBlock
+                                            Margin="10"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource BaseText}"
+                                            Text="Статус: " />
+
+                                        <TextBlock
+                                            Margin="10"
+                                            VerticalAlignment="Center"
+                                            Style="{StaticResource BaseText}"
+                                            Text="{Binding StatusText}"
                                             TextWrapping="Wrap" />
                                     </UniformGrid>
 

@@ -41,20 +41,16 @@
 
         <Grid Background="{StaticResource LightBaseBrush}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.4*" />
+                <RowDefinition Height="0.132*" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            
-            
-            <Grid Background="White">
-                
+
+
+            <Grid Background="{StaticResource LightBaseBrush}">
+
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="3*" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid>
-                    
-                </Grid>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="110" />
@@ -63,12 +59,14 @@
                     <Grid Grid.ColumnSpan="2">
                         <Button
                         Command="{Binding Import}"
-                        Content="Импорт"
-                        Style="{StaticResource BaseButton}" Margin="0,0,140,0" />
+                        Style="{StaticResource BaseButton}" Margin="0,0,140,0" >
+                            <ContentControl Height="50" Content="{StaticResource ExportIcon}" />
+                        </Button>
                         <Button
                         Command="{Binding Export}"
-                        Content="Экспорт"
-                        Style="{StaticResource BaseButton}" Margin="140,0,0,0" />
+                        Style="{StaticResource BaseButton}" Margin="140,0,0,0"  >
+                            <ContentControl Height="50" Content="{StaticResource ImportIcon}" />
+                        </Button>
                     </Grid>
                 </Grid>
             </Grid>

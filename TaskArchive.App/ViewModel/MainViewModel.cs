@@ -49,10 +49,6 @@ namespace TasksArchive.ViewModel
                             case '@': return Tasks.KeyWords.FirstOrDefault(s => s.Value.ToLower().Contains(SearchText.Remove(0, 1).ToLower())) != null;
                             case '#': return Tasks.Tematic?.ToLower().Contains(SearchText.Remove(0, 1).ToLower()) == true;
                             //case '!': return Tasks.Channel?.ToLower().Contains(SearchText.Remove(0, 1).ToLower()) == true;
-                            case '$':
-                                if (DateTime.TryParse(SearchText.Remove(0, 1), out DateTime date))
-                                    return Tasks.PublishData.Date == date.Date;
-                                return false;
 
                             default: return Tasks.Name.ToLower().Contains(SearchText.ToLower());
                         }

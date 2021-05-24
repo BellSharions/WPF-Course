@@ -129,6 +129,7 @@
     <Compile Include="ViewModel\EditTasksViewModel.cs" />
     <Compile Include="ViewModel\ImageViewerViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\RegisterViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
     <Compile Include="Views\AuthWindow.xaml.cs">
       <DependentUpon>AuthWindow.xaml</DependentUpon>

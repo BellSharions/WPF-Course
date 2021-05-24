@@ -7,7 +7,7 @@
     xmlns:viewmodel="clr-namespace:TaskArchive.App.ViewModel"
         Title="AuthWindow"
     Width="387"
-    Height="200"
+    Height="160"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
 
@@ -27,7 +27,8 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.2*"/>
                 <RowDefinition Height="0.2*"/>
-                <RowDefinition Height="0.4*"/>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.2*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="{StaticResource MediumBaseBrush}">
                 <Grid.ColumnDefinitions>
@@ -60,12 +61,24 @@
                     Background="{StaticResource LightBaseBrush}"
                     PasswordChar="*" />
             </Grid>
-            <Button
+            <Grid Grid.Row="2">
+                <Button
                 Grid.Row="2"
                 Command="{Binding AuthCommand}"
                 CommandParameter="{Binding ElementName=PasswordBox}"
                 Content="Вход"
                 Style="{StaticResource BaseButton}"/>
+               
+            </Grid>
+            <Grid Grid.Row="3">
+                <Button
+                Grid.Row="2"
+                Command="{Binding RegisterCommandWindow}"
+                CommandParameter="{Binding ElementName=PasswordBox}"
+                Content="Регистрация"
+                Style="{StaticResource BaseButton}"/>
+            </Grid>
+           
         </Grid>
     </Grid>
 </Window>

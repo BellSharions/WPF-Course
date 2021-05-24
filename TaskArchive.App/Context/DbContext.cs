@@ -22,9 +22,9 @@ namespace TaskArchive.App.Context
 
         private readonly UserContext _userContext;
 
-        private const string Avatar = "pack://application:,,,/Resources/BlankAvatar.png";
+        private const string Avatar = null;
 
-        public readonly BitmapFrame DefaultAvatar = BitmapFrame.Create(new Uri(Avatar, UriKind.Absolute), BitmapCreateOptions.None, BitmapCacheOption.OnLoad);
+        public readonly BitmapFrame DefaultAvatar = null;
 
         public readonly MySqlConnection Conn;
 

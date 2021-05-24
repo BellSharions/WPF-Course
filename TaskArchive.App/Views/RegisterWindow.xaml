@@ -3,10 +3,63 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TaskArchive.App.Views"
+        xmlns:local="clr-namespace:TaskArchive.App.Views" xmlns:viewmodel="clr-namespace:TaskArchive.App.ViewModel"
         mc:Ignorable="d"
-        Title="RegisterWindow" Height="450" Width="800">
+        Title="RegisterWindow" Height="160" Width="387">
+
+    <Window.DataContext>
+        <viewmodel:RegisterViewModel />
+    </Window.DataContext>
+
+
     <Grid>
-        
+        <Grid Background="{StaticResource LightBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.2*"/>
+                <RowDefinition Height="0.2*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Background="{StaticResource MediumBaseBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Content="Login:"
+                    FontSize="17px" 
+                    />
+                <TextBox
+                    x:Name="LoginBox"
+                    Grid.Column="1"
+                    Background="{StaticResource LightBaseBrush}"
+                    Text="{Binding UserName}" />
+            </Grid>
+            <Grid Grid.Row="1" Background="{StaticResource MediumBaseBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label
+                    Grid.Column="0"
+                    Content="Password:"
+                    FontSize="17px" />
+                <PasswordBox
+                    x:Name="PasswordBox"
+                    Grid.Column="1"
+                    Background="{StaticResource LightBaseBrush}"
+                    PasswordChar="*"/>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Button
+                Grid.Row="2"
+                Command="{Binding RegisterCommand}"
+                CommandParameter="{Binding ElementName=PasswordBox}"
+                Content="Регистрация"
+                Style="{StaticResource BaseButton}"/>
+
+            </Grid>
+
+        </Grid>
     </Grid>
 </Window>

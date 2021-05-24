@@ -10,8 +10,10 @@ using System.Windows.Input;
 using TaskArchive.App.Context;
 using TaskArchive.App.Context.Roles;
 using TaskArchive.App.Model;
+using TaskArchive.App.Views;
 using TasksArchive.App;
 using TasksArchive.Model;
+using static TaskArchive.App.Context.Roles.User;
 
 namespace TaskArchive.App.ViewModel
 {
@@ -34,7 +36,27 @@ namespace TaskArchive.App.ViewModel
         {
             _dbContext = DbContext.GetInstance();
         }
-
+        public ICommand RegisterCommandWindow
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    var w = new RegisterWindow();
+                    var vm = new RegisterViewModel
+                    {};
+                    w.DataContext = vm;
+                    foreach(var i in Application.Current.Windows)
+                        if (i.GetType() == typeof(AuthWindow))
+                        {
+                            var tmp = (Window)i;
+                            tmp.Close();
+                            break;
+                        }
+                    w.ShowDialog();
+                });
+            }
+        }
         public ICommand AuthCommand {
 
             get
@@ -50,7 +72,7 @@ namespace TaskArchive.App.ViewModel
                 {
                     _dbContext.Conn.Open();
                     var command = _dbContext.Conn.CreateCommand();
-                    command.CommandText = $"SELECT * FROM USERS WHERE ID = @Login";
+                    command.CommandText = $"SELECT * FROM USERS WHERE username = @Login";
                     command.Parameters.AddWithValue("@Login", Login);
                     var result = command.ExecuteReaderAsync().Result;
                     if (!result.HasRows)
@@ -61,32 +83,31 @@ namespace TaskArchive.App.ViewModel
                     }
                     while (result.ReadAsync().Result)
                     {
-                        var hasher = new Encryption();
-                        var salt = result.GetString(result.GetOrdinal("salt"));
-                        var hash = result.GetString(result.GetOrdinal("hash"));
-
-                        var testHash = hasher.Encrypt(passwordBox.Password, salt);
-
-                        if (testHash != hash)
+                        UserContext.GetInstance().User = new User {
+                            Id = result.GetString(result.GetOrdinal("userID")),
+                            Name = result.GetString(result.GetOrdinal("username"))
+                        };
+                        switch (result.GetString(result.GetOrdinal("role")))
                         {
-                            MessageBox.Show("Доступ недоступен", "Error");
-                            _dbContext.Conn.Close();
-                            return;
+                            case "user":
+                                UserContext.GetInstance().User.Role = Roles.User;
+                                break;
+                            case "admin":
+                                UserContext.GetInstance().User.Role = Roles.Admin;
+                                break;
                         }
-
-                        UserContext.GetInstance().User = new User { Id = result.GetString(result.GetOrdinal("id")) };
                     }
                     _dbContext.Conn.Close();
 
-                    _dbContext.Conn.Open();
-                    var command2 = _dbContext.Conn.CreateCommand();
-                    command2.CommandText = $"SELECT Taskss FROM TASKS WHERE ID = '{UserContext.GetInstance().User.Id}';";
-                    var result2 = command2.ExecuteReaderAsync().Result;
-                    while (result2.ReadAsync().Result)
-                    {
-                        UserContext.GetInstance().User.Taskss = null;
-                    }
-                    _dbContext.Conn.Close();
+                    //_dbContext.Conn.Open();
+                    //var command2 = _dbContext.Conn.CreateCommand();
+                    //command2.CommandText = $"SELECT Tasks FROM TASKS WHERE ID = '{UserContext.GetInstance().User.Id}';";
+                    //var result2 = command2.ExecuteReaderAsync().Result;
+                    //while (result2.ReadAsync().Result)
+                    //{
+                    //    UserContext.GetInstance().User.Taskss = null;
+                    //}
+                    //_dbContext.Conn.Close();
                 }
                 catch (Exception ex)
                 {

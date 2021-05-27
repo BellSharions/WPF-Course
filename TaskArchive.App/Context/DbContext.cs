@@ -22,10 +22,6 @@ namespace TaskArchive.App.Context
 
         private readonly UserContext _userContext;
 
-        private const string Avatar = null;
-
-        public readonly BitmapFrame DefaultAvatar = null;
-
         public readonly MySqlConnection Conn;
 
         public ObservableCollection<Tasks> Taskss;

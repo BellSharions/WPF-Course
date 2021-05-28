@@ -1,6 +1,9 @@
 ﻿using DevExpress.Mvvm;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -83,31 +86,44 @@ namespace TaskArchive.App.ViewModel
                     }
                     while (result.ReadAsync().Result)
                     {
+                        if (passwordBox.Password != result.GetString(result.GetOrdinal("password")))
+                            {
+                            MessageBox.Show("Неправильный пароль", "Error");
+                            _dbContext.Conn.Close();
+                            return;
+                        }
                         UserContext.GetInstance().User = new User {
                             Id = result.GetString(result.GetOrdinal("userID")),
                             Name = result.GetString(result.GetOrdinal("username"))
                         };
-                        switch (result.GetString(result.GetOrdinal("role")))
-                        {
-                            case "user":
-                                UserContext.GetInstance().User.Role = Roles.User;
-                                break;
-                            case "admin":
-                                UserContext.GetInstance().User.Role = Roles.Admin;
-                                break;
-                        }
+                    }
+                    command.Connection.Close();
+                    _dbContext.Conn.Close();
+                    _dbContext.Conn.Open();
+                    var command2 = _dbContext.Conn.CreateCommand();
+                    command2.CommandText = $"SELECT * FROM ROLES WHERE userID = @ID";
+                    command2.Parameters.AddWithValue("@ID", UserContext.GetInstance().User.Id);
+                    var result2 = command2.ExecuteReaderAsync().Result;
+                    result2.ReadAsync();
+                    switch (result2.GetString(0))
+                    {
+                        case "user":
+                            UserContext.GetInstance().User.Role = Roles.User;
+                            break;
+                        case "admin":
+                            UserContext.GetInstance().User.Role = Roles.Admin;
+                            break;
                     }
                     _dbContext.Conn.Close();
-
-                    //_dbContext.Conn.Open();
-                    //var command2 = _dbContext.Conn.CreateCommand();
-                    //command2.CommandText = $"SELECT Description FROM TASKS WHERE ID = '{UserContext.GetInstance().User.Id}';";
-                    //var result2 = command2.ExecuteReaderAsync().Result;
-                    //while (result2.ReadAsync().Result)
-                    //{
-                    //    UserContext.GetInstance().User.Taskss = null;
-                    //}
-                    //_dbContext.Conn.Close();
+                    _dbContext.Conn.Open();
+                    var command3 = _dbContext.Conn.CreateCommand();
+                    command3.CommandText = $"SELECT Description FROM TASKS WHERE userID = '{UserContext.GetInstance().User.Id}';";
+                    var result3 = command3.ExecuteReaderAsync().Result;
+                    while (result3.ReadAsync().Result)
+                    {
+                        UserContext.GetInstance().User.Taskss = JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json"));
+                    }
+                    _dbContext.Conn.Close();
                 }
                 catch (Exception ex)
                 {
@@ -116,8 +132,17 @@ namespace TaskArchive.App.ViewModel
                     return;
                 }
                 var mainWindow = new MainWindow();
-                mainWindow.Show();
-                Application.Current.MainWindow?.Close();
+                var adminWindow = new AdminWindow();
+                if (UserContext.GetInstance().User.Role == Roles.Admin)
+                {
+                    adminWindow.Show();
+                    Application.Current.MainWindow?.Close();
+                }
+                else
+                {
+                    mainWindow.Show();
+                    Application.Current.MainWindow?.Close();
+                }
             });
             }
         } } }

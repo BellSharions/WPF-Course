@@ -10,6 +10,8 @@ using System.Windows.Media.Imaging;
 using TasksArchive.Model;
 using System.Configuration;
 using TaskArchive.App.Context.Roles;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace TaskArchive.App.Context
 {
@@ -151,19 +153,24 @@ namespace TaskArchive.App.Context
 
         public void AddTask(Tasks task)
         {
-            //проверочку сделать
             Taskss.Add(task);
             try
             {
                 Conn.Open();
                 var command = Conn.CreateCommand();
-                //написать запросы к бд, чтобы добавляло
-                command.CommandText = "";
+                command.CommandText = "INSERT INTO tasks(userID, Name, Description, Status, Tematic) values (@UserID, @TaskName, @TaskDesc, @Status, @Tematic)";
                 command.Parameters.AddWithValue("@UserID", UserContext.GetInstance().User.Id);
                 command.Parameters.AddWithValue("@TaskName", task.Name);
-                command.Parameters.AddWithValue("@TaskDesc", task.Descrition);
-                //и другое
+                command.Parameters.AddWithValue("@TaskDesc", JsonConvert.SerializeObject(File.ReadAllText("TaskssData.json")));
+                command.Parameters.AddWithValue("@Status", task.Status);
+                command.Parameters.AddWithValue("@Tematic", task.Tematic);
                 command.ExecuteNonQueryAsync();
+                Conn.Close();
+                Conn.Open();
+                var command2 = Conn.CreateCommand();
+                command2.CommandText = "INSERT INTO datainformation(userID, ExportDate) values (@UserID, CURDATE())";
+                command2.Parameters.AddWithValue("@UserID", UserContext.GetInstance().User.Id);
+                command2.ExecuteNonQueryAsync();
                 Conn.Close();
             }
             catch (Exception ex)

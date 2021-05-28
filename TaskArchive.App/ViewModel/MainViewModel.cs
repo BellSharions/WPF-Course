@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using TaskArchive.App.Context;
 using TasksArchive.App.Model;
 using TasksArchive.App.ViewModel;
 using TasksArchive.App.Views;
@@ -20,6 +21,7 @@ namespace TasksArchive.ViewModel
     public class MainViewModel : BaseVM
     {
         private Tasks _selectedTask;
+        private readonly DbContext _dbContext;
         public ObservableCollection<Tasks> Taskss { get; set; }
         public ICollectionView TaskssView { get; set; }
         public Page MainContent { get; set; }
@@ -62,6 +64,7 @@ namespace TasksArchive.ViewModel
         }
         public MainViewModel()
         {
+            _dbContext = DbContext.GetInstance();
             OverlayService.GetInstance().Show = (str) =>
             {
                 OverlayService.GetInstance().Text = str;
@@ -101,6 +104,7 @@ namespace TasksArchive.ViewModel
                 return new DelegateCommand(() =>
                 {
                     File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
+                    _dbContext.AddTask(Taskss.LastOrDefault());
                 });
             }
         }

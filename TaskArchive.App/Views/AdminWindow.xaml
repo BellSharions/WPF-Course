@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TaskArchive.App.Views" xmlns:viewmodel="clr-namespace:TaskArchive.App.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AdminViewModel}"
         mc:Ignorable="d"
-        Title="AdminWindow" Height="240" Width="165" ResizeMode="NoResize">
+        Title="AdminWindow" Height="260" Width="165" ResizeMode="NoResize">
 
     <Window.DataContext>
         <viewmodel:AdminViewModel />
@@ -49,6 +49,10 @@
                 Width="Auto"
                 Command="{Binding OpenBD}"
                 Content="Открыть БД" />
+            <Button
+                Width="Auto"
+                Command="{Binding OpenGit}"
+                Content="Открыть сайт проекта" />
         </StackPanel>
         
     </Grid>

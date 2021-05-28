@@ -129,6 +129,21 @@ namespace TaskArchive.App.ViewModel
                 });
             }
         }
+        public ICommand OpenGit
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    var ps = new ProcessStartInfo("https://github.com/BellSharions/WPF-Course")
+                    {
+                        UseShellExecute = true,
+                        Verb = "open"
+                    };
+                    Process.Start(ps);
+                });
+            }
+        }
         public ICommand CommitCommand
         {
             get

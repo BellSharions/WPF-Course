@@ -83,18 +83,25 @@ namespace TaskArchive.App.ViewModel
                         _dbContext.Conn.Open();
                         var command = _dbContext.Conn.CreateCommand();
                         command.CommandText = "SELECT Count(*) FROM USERS";
-                        var result = command.ExecuteScalarAsync().Result;
+                        dynamic result = command.ExecuteScalarAsync().Result;
+                        UserID = (int)result;
                         _dbContext.Conn.Close();
                         PassWord = obj.Password;
-                        UserID = 1;
                         _dbContext.Conn.Open();
                         var command2 = _dbContext.Conn.CreateCommand();
-                        command2.CommandText = $"INSERT INTO users (userID, username, password, role) values (@userID, @username, @passwoed, @role)";
+                        command2.CommandText = $"INSERT INTO users (userID, username, password) values (@userID, @username, @password)";
                         command2.Parameters.AddWithValue("@userID", UserID);
                         command2.Parameters.AddWithValue("@username", UserName);
                         command2.Parameters.AddWithValue("@password", PassWord);
-                        command2.Parameters.AddWithValue("@role", Role.ToString());
                         command2.ExecuteNonQueryAsync();
+                        _dbContext.Conn.Close();
+
+                        _dbContext.Conn.Open();
+                        var command3 = _dbContext.Conn.CreateCommand();
+                        command3.CommandText = $"INSERT INTO roles (userID, Role) values (@userID, @role)";
+                        command3.Parameters.AddWithValue("@userID", UserID);
+                        command3.Parameters.AddWithValue("@role", Role.ToString());
+                        command3.ExecuteNonQueryAsync();
                         _dbContext.Conn.Close();
                     }
                     catch (Exception ex)
@@ -105,7 +112,7 @@ namespace TaskArchive.App.ViewModel
                     }
                     var mainWindow = new AuthWindow();
                     mainWindow.Show();
-                    Application.Current.MainWindow?.Close();
+                    Application.Current.Windows[0].Close();
                 });
             }
         }

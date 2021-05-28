@@ -110,7 +110,6 @@ namespace TaskArchive.App.ViewModel
                 {
                     var mainWindow = new MainWindow();
                     mainWindow.Show();
-                    Application.Current.MainWindow?.Close();
                 });
             }
         }

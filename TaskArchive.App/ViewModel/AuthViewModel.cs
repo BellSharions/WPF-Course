@@ -105,12 +105,12 @@ namespace TaskArchive.App.ViewModel
                     command2.Parameters.AddWithValue("@ID", UserContext.GetInstance().User.Id);
                     var result2 = command2.ExecuteReaderAsync().Result;
                     result2.ReadAsync();
-                    switch (result2.GetString(0))
+                    switch (result2.GetString(1))
                     {
-                        case "user":
+                        case "User":
                             UserContext.GetInstance().User.Role = Roles.User;
                             break;
-                        case "admin":
+                        case "Admin":
                             UserContext.GetInstance().User.Role = Roles.Admin;
                             break;
                     }

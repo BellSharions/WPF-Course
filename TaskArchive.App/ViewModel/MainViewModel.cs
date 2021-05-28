@@ -1,4 +1,5 @@
 ﻿using DevExpress.Mvvm;
+using MySql.Data.MySqlClient;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
@@ -10,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using TaskArchive.App;
 using TaskArchive.App.Context;
 using TasksArchive.App.Model;
 using TasksArchive.App.ViewModel;
@@ -93,6 +95,12 @@ namespace TasksArchive.ViewModel
                     };
                     BindingOperations.EnableCollectionSynchronization(Taskss, new object());
                     TaskssView = CollectionViewSource.GetDefaultView(Taskss);
+                    _dbContext.Conn.Open();
+                    var command2 = _dbContext.Conn.CreateCommand();
+                    command2.CommandText = "UPDATE datainformation SET ImportDate = CURDATE() WHERE userID = @UserID";
+                    command2.Parameters.AddWithValue("@UserID", UserContext.GetInstance().User.Id);
+                    command2.ExecuteNonQueryAsync();
+                    _dbContext.Conn.Close();
                 });
             }
         }

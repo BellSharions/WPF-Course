@@ -58,16 +58,17 @@ namespace TaskArchive.App.Context
             {
                 Conn.Open();
                 var command = Conn.CreateCommand();
-                command.CommandText = $"INSERT INTO USERS (userID, username, password) values (@Id, @Name, @Hash, @Salt)";
-                command.Parameters.AddWithValue("@Name", user.Name);
-                command.Parameters.AddWithValue("@SelectedRole", user.Role.ToString());
+                command.CommandText = $"INSERT INTO USERS (userID, username, password) values (@Id, @UserName, @PassWord)";
+                command.Parameters.AddWithValue("@UserName", user.Name);
+                command.Parameters.AddWithValue("@PassWord", user.PassWord);
                 command.Parameters.AddWithValue("@Id", user.Id);
                 command.ExecuteNonQuery();
                 Conn.Close();
                 if (user.Role != User.Roles.User) return;
                 Conn.Open();
                 var command2 = Conn.CreateCommand();
-                command2.CommandText = "INSERT INTO ROLES (userID, role) values (@UserID, @Role)";
+                command2.CommandText = "INSERT INTO ROLES (userID, Role) values (@UserID, @Role)";
+                command2.Parameters.AddWithValue("@UserID", user.Id);
                 command2.Parameters.AddWithValue("@Role", user.Role.ToString());
                 command2.ExecuteNonQuery();
                 Conn.Close();
@@ -96,8 +97,8 @@ namespace TaskArchive.App.Context
                 {
                     Users.Add(new User()
                     {
-                        Id = result.GetString(result.GetOrdinal("Id")),
-                        Name = result.GetString(result.GetOrdinal("Name"))
+                        Id = result.GetString(result.GetOrdinal("userID")),
+                        Name = result.GetString(result.GetOrdinal("username"))
                     });
                 }
                 Conn.Close();
@@ -158,7 +159,7 @@ namespace TaskArchive.App.Context
                 var command = Conn.CreateCommand();
                 //написать запросы к бд, чтобы добавляло
                 command.CommandText = "";
-                //command.Parameters.AddWithValue("@UserID", AuthUser.Id);
+                command.Parameters.AddWithValue("@UserID", UserContext.GetInstance().User.Id);
                 command.Parameters.AddWithValue("@TaskName", task.Name);
                 command.Parameters.AddWithValue("@TaskDesc", task.Descrition);
                 //и другое

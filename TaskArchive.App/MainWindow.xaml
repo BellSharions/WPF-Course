@@ -17,7 +17,8 @@
     ResizeMode="CanResize"
     WindowStartupLocation="CenterScreen"
     WindowState="Normal"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Style="{DynamicResource WindowStyle}">
 
 
     <Window.Resources>
@@ -59,12 +60,12 @@
                     <Grid Grid.ColumnSpan="2">
                         <Button
                         Command="{Binding Import}"
-                        Style="{StaticResource BaseButton}" Margin="0,0,140,0" >
+                        Style="{DynamicResource ButtonStyle}" Margin="0,0,140,0" >
                             <ContentControl Height="50" Content="{StaticResource ExportIcon}" />
                         </Button>
                         <Button
                         Command="{Binding Export}"
-                        Style="{StaticResource BaseButton}" Margin="140,0,0,0"  >
+                        Style="{DynamicResource ButtonStyle}" Margin="140,0,0,0"  >
                             <ContentControl Height="50" Content="{StaticResource ImportIcon}" />
                         </Button>
                     </Grid>
@@ -89,7 +90,7 @@
                             Style="{StaticResource IconContent}" />
 
                         <TextBox
-                            Style="{StaticResource BaseTextBox}"
+                            Style="{DynamicResource TextBlockStyle}"
                             Tag="Найти в названии...."
                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" />
                     </DockPanel>
@@ -98,7 +99,7 @@
                         Margin="10"
                         Command="{Binding Sort}"
                         Content="Названия"
-                        Style="{StaticResource BaseButton}" />
+                        Style="{DynamicResource ButtonStyle}" />
                 </StackPanel>
 
                 <ListBox
@@ -150,7 +151,7 @@
                     Margin="-2,0,0,0"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
-                    <Button Command="{Binding AddItem}" Style="{StaticResource BaseButton}">
+                    <Button Command="{Binding AddItem}" Style="{DynamicResource ButtonStyle}">
                         <ContentControl Height="50" Content="{StaticResource PlusIcon}" />
                     </Button>
 
@@ -158,7 +159,7 @@
                         Margin="-2,0,0,0"
                         Command="{Binding EditTasks}"
                         CommandParameter="{Binding SelectedTasks}"
-                        Style="{StaticResource BaseButton}">
+                        Style="{DynamicResource ButtonStyle}">
                         <ContentControl Height="50" Content="{StaticResource PanIcon}" />
                     </Button>
 
@@ -166,14 +167,14 @@
                         Margin="-2,0,0,0"
                         Command="{Binding DeleteTasks}"
                         CommandParameter="{Binding SelectedTasks}"
-                        Style="{StaticResource BaseButton}">
+                        Style="{DynamicResource ButtonStyle}">
                         <ContentControl Height="50" Content="{StaticResource TrashIcon}" />
                     </Button>
                 </StackPanel>
 
 
             </Grid>
-            <!--короче, теперь данные при выборе обновляются, но надо будет потестить еще(особенно после подключения бд, пока что не очень-->
+            
             <Grid
                 Grid.Row="1"
                 Background="{StaticResource UltraLightBaseBrush}"
@@ -302,24 +303,6 @@
 
                                     <Grid Margin="0,20,0,0">
                                         <WrapPanel HorizontalAlignment="Center" Orientation="Vertical">
-                                            <StackPanel HorizontalAlignment="Center">
-                                                <controls:RepeatMediaElement
-                                                    x:Name="media"
-                                                    MaxWidth="400"
-                                                    Margin="5"
-                                                    HorizontalAlignment="Center"
-                                                    ScrubbingEnabled="True"
-                                                    Source="{Binding Path}"
-                                                    Volume="{Binding ElementName=mediaVolume, Path=Value}" />
-                                                <!-- если будет время - добавлю поддержку медиа, пока что надо основу сделать-->
-                                                <!--<Slider
-                                                    Name="mediaVolume"
-                                                    MaxWidth="{Binding ElementName=media, Path=MaxWidth}"
-                                                    Maximum="1"
-                                                    Minimum="0"
-                                                    TickFrequency="0.1" />-->
-                                            </StackPanel>
-
                                             <ItemsControl ItemsSource="{Binding Images}">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>

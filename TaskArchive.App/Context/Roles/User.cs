@@ -20,6 +20,7 @@ namespace TaskArchive.App.Context.Roles
         public Roles Role { get; set; }
         public string Name { get; set; }
         public string Id { get; set; }
+        public string PassWord { get; set; }
 
         public ObservableCollection<Tasks> Taskss;
 

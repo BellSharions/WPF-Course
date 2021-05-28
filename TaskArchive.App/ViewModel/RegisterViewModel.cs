@@ -81,15 +81,20 @@ namespace TaskArchive.App.ViewModel
                     try
                     {
                         _dbContext.Conn.Open();
-                        PassWord = obj.Password;
-                        UserID = 4;
                         var command = _dbContext.Conn.CreateCommand();
-                        command.CommandText = $"INSERT INTO users (userID, username, password, role) values (@userID, @username, @passwoed, @role)";
-                        command.Parameters.AddWithValue("@userID", UserID);
-                        command.Parameters.AddWithValue("@username", UserName);
-                        command.Parameters.AddWithValue("@password", PassWord);
-                        command.Parameters.AddWithValue("@role", Role.ToString());
-                        command.ExecuteNonQueryAsync();
+                        command.CommandText = "SELECT Count(*) FROM USERS";
+                        var result = command.ExecuteScalarAsync().Result;
+                        _dbContext.Conn.Close();
+                        PassWord = obj.Password;
+                        UserID = 1;
+                        _dbContext.Conn.Open();
+                        var command2 = _dbContext.Conn.CreateCommand();
+                        command2.CommandText = $"INSERT INTO users (userID, username, password, role) values (@userID, @username, @passwoed, @role)";
+                        command2.Parameters.AddWithValue("@userID", UserID);
+                        command2.Parameters.AddWithValue("@username", UserName);
+                        command2.Parameters.AddWithValue("@password", PassWord);
+                        command2.Parameters.AddWithValue("@role", Role.ToString());
+                        command2.ExecuteNonQueryAsync();
                         _dbContext.Conn.Close();
                     }
                     catch (Exception ex)

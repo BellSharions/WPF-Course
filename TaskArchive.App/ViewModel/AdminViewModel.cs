@@ -102,6 +102,18 @@ namespace TaskArchive.App.ViewModel
             PassWord = "Пароль";
             Users = new ObservableCollection<User>();
         }
+        public ICommand StartApp
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    var mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    Application.Current.MainWindow?.Close();
+                });
+            }
+        }
         public ICommand CommitCommand
         {
             get
@@ -112,7 +124,8 @@ namespace TaskArchive.App.ViewModel
                     {
                         Id = UserID.ToString(),
                         Name = UserName,
-                        Role = User.Roles.User
+                        Role = User.Roles.User,
+                        PassWord = PassWord
                     });
                 });
             }
@@ -127,7 +140,7 @@ namespace TaskArchive.App.ViewModel
                     {
                         _dbContext.Conn.Open();
                         var command = _dbContext.Conn.CreateCommand();
-                        command.CommandText = $"DELETE FROM users WHERE userID == @userID";
+                        command.CommandText = $"DELETE FROM users WHERE userID = @userID";
                         command.Parameters.AddWithValue("@userID", UserID);
                         command.ExecuteNonQueryAsync();
                         _dbContext.Conn.Close();

@@ -20,7 +20,8 @@
                 <ResourceDictionary Source="Styles\Buttons.xaml" />
                 <ResourceDictionary Source="Styles\ContentControls.xaml" />
                 <ResourceDictionary Source="Styles\UserControl.xaml" />
-
+                <ResourceDictionary Source="Views/light.xaml"/>
+                <ResourceDictionary Source="Views/dark.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

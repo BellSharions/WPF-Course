@@ -101,7 +101,7 @@ namespace TaskArchive.App.ViewModel
 
                     //_dbContext.Conn.Open();
                     //var command2 = _dbContext.Conn.CreateCommand();
-                    //command2.CommandText = $"SELECT Tasks FROM TASKS WHERE ID = '{UserContext.GetInstance().User.Id}';";
+                    //command2.CommandText = $"SELECT Description FROM TASKS WHERE ID = '{UserContext.GetInstance().User.Id}';";
                     //var result2 = command2.ExecuteReaderAsync().Result;
                     //while (result2.ReadAsync().Result)
                     //{

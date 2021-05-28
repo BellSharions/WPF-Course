@@ -42,7 +42,8 @@
                 Content="Удалить пользователя" />
             <StackPanel>
                 <ComboBox x:Name="styleBox" />
-                <Button Content="Изменить тему"/>
+                <Button Content="Изменить тему"
+                Command="{Binding StartApp}"/>
             </StackPanel>
         </StackPanel>
         

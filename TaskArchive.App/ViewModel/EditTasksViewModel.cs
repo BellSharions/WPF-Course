@@ -117,7 +117,7 @@ namespace TasksArchive.App.ViewModel
                     TasksInfo.Name = info.Name;
                     TasksInfo.Channel = info.Channel;
                     TasksInfo.Descrition = info.Descrition;
-
+                    TasksInfo.Status = info.Status;
                 });
             }
         }

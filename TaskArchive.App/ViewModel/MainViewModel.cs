@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -160,6 +161,11 @@ namespace TasksArchive.ViewModel
                     };
                     w.DataContext = vm;
                     w.ShowDialog();
+                    if (vm.TasksInfo.Name == null && vm.TasksInfo.Descrition == null && vm.TasksInfo.Channel == null)
+                    {
+                        MessageBox.Show("Введите данные");
+                        return;
+                    }
                     File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
                     Taskss.Add(vm.TasksInfo);
                 });

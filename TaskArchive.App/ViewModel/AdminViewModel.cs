@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -110,6 +111,21 @@ namespace TaskArchive.App.ViewModel
                 {
                     var mainWindow = new MainWindow();
                     mainWindow.Show();
+                });
+            }
+        }
+        public ICommand OpenBD
+        {
+            get
+            {
+                return new DelegateCommand(() =>
+                {
+                    var ps = new ProcessStartInfo("http://localhost/phpmyadmin/index.php")
+                    {
+                        UseShellExecute = true,
+                        Verb = "open"
+                    };
+                    Process.Start(ps);
                 });
             }
         }

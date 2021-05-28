@@ -9,7 +9,7 @@ using TasksArchive.Model;
 
 namespace TaskArchive.App.Context.Roles
 {
-    class User
+    public class User
     {
         public enum Roles
         {
@@ -18,8 +18,6 @@ namespace TaskArchive.App.Context.Roles
         }
 
         public Roles Role { get; set; }
-
-        public BitmapFrame Image;
         public string Name { get; set; }
         public string Id { get; set; }
 

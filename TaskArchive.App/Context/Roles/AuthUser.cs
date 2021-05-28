@@ -20,7 +20,6 @@ namespace TaskArchive.App.Context.Roles
         {
             Name = user.Name;
             Id = user.Id;
-            Image = user.Image;
             _dbContext = DbContext.GetInstance();
         }
         private string GetTasksNum()

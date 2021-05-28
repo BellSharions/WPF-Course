@@ -31,7 +31,7 @@ namespace TaskArchive.App.Views
         private void ThemeChange(object sender, SelectionChangedEventArgs e)
         {
             string style = styleBox.SelectedItem as string;
-            var uri = new Uri(style + ".xaml", UriKind.Relative);
+            var uri = new Uri("Views/" + style + ".xaml", UriKind.Relative);
             ResourceDictionary resourceDict = Application.LoadComponent(uri) as ResourceDictionary;
             Application.Current.Resources.Clear();
             Application.Current.Resources.MergedDictionaries.Add(resourceDict);

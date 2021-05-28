@@ -3,36 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TaskArchive.App.Views" xmlns:viewmodel="clr-namespace:TaskArchive.App.ViewModel"
+        xmlns:local="clr-namespace:TaskArchive.App.Views" xmlns:viewmodel="clr-namespace:TaskArchive.App.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AdminViewModel}"
         mc:Ignorable="d"
-        Title="AdminWindow" Height="205" Width="160">
+        Title="AdminWindow" Height="210" Width="165" ResizeMode="NoResize">
 
+    <Window.DataContext>
+        <viewmodel:AdminViewModel />
+    </Window.DataContext>
     <Grid >
         <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
             <TextBox Text="Добавление пользователя"/>
             <TextBox
-                MaxLength="40"
-                Validation.Error="Validation_OnError">
+                MaxLength="40">
                 <TextBox.Text>
                     <Binding
                         Mode="TwoWay"
                         NotifyOnValidationError="True"
-                        Path="Name"
-                        >
-                        <Binding.ValidationRules>
-                            <DataErrorValidationRule />
-                        </Binding.ValidationRules>
+                        Path="UserName">
                     </Binding>
                 </TextBox.Text>
             </TextBox>
             <TextBox
                 MaxLength="8"
-                Text="{Binding Id, Mode=TwoWay}" />
+                Text="{Binding UserID, Mode=TwoWay}" />
             <TextBox
                 MaxLength="25"
-                Text="{Binding Password, Mode=TwoWay}" />
+                Text="{Binding PassWord, Mode=TwoWay}" />
             <ComboBox
-                ItemsSource="{Binding Roles}"
+                ItemsSource="{Binding Role}"
                 SelectedItem="{Binding SelectedRole}" />
             <Button
                 Width="Auto"

@@ -16,7 +16,6 @@ namespace TaskArchive.App.Context.Roles
             Name = user.Name;
             Id = user.Id;
             Role = user.Role;
-            Image = user.Image;
         }
     }
 }

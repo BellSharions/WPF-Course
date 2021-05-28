@@ -160,7 +160,7 @@ namespace TasksArchive.ViewModel
                         TasksInfo = new Tasks(),
                     };
                     w.DataContext = vm;
-                    w.ShowDialog();
+                    w.ShowDialog(); 
                     if (vm.TasksInfo.Name == null && vm.TasksInfo.Descrition == null && vm.TasksInfo.Channel == null)
                     {
                         MessageBox.Show("Введите данные");

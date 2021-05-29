@@ -89,8 +89,7 @@ namespace TasksArchive.ViewModel
             {
                 return new DelegateCommand(() =>
                 {
-                    Taskss = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
-                    
+                    ObservableCollection<Tasks> temp;
                     _dbContext.Conn.Open();
                     var command2 = _dbContext.Conn.CreateCommand();
                     command2.CommandText = "SELECT description FROM tasks where userID = @ID";
@@ -99,9 +98,14 @@ namespace TasksArchive.ViewModel
                     result.ReadAsync();
                         if (File.Exists("TaskssData.json"))
                             File.WriteAllText("TaskssData.json", result.GetString(0));
-                        Taskss = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
+                        temp = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
                         _dbContext.Conn.Close();
                     _dbContext.Conn.Open();
+                    foreach (var item in temp)
+                    {
+                        Taskss.Add(item);
+                    }
+                        
                     var command3 = _dbContext.Conn.CreateCommand();
                     command3.CommandText = "UPDATE datainformation SET ImportDate = CURDATE() WHERE userID = @UserID";
                     command3.Parameters.AddWithValue("@UserID", UserContext.GetInstance().User.Id);

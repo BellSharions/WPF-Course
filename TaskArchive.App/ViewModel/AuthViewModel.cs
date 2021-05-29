@@ -115,18 +115,18 @@ namespace TaskArchive.App.ViewModel
                             break;
                     }
                     _dbContext.Conn.Close();
-                    _dbContext.Conn.Open();
-                    var command3 = _dbContext.Conn.CreateCommand();
-                    command3.CommandText = "SELECT description FROM tasks where userID = @ID";
-                    command3.Parameters.AddWithValue("@ID", UserContext.GetInstance().User.Id);
-                    var result3 = command3.ExecuteReaderAsync().Result;
-                    while (result3.ReadAsync().Result)
-                    {
-                        if (File.Exists("TaskssData.json"))
-                            File.WriteAllText("TaskssData.json", result3.GetString(0));
-                        UserContext.GetInstance().User.Taskss = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
-                    }
-                    _dbContext.Conn.Close();
+                    //_dbContext.Conn.Open();
+                    //var command3 = _dbContext.Conn.CreateCommand();
+                    //command3.CommandText = "SELECT description FROM tasks where userID = @ID";
+                    //command3.Parameters.AddWithValue("@ID", UserContext.GetInstance().User.Id);
+                    //var result3 = command3.ExecuteReaderAsync().Result;
+                    //while (result3.ReadAsync().Result)
+                    //{
+                    //    if (File.Exists("TaskssData.json"))
+                    //        File.WriteAllText("TaskssData.json", result3.GetString(0));
+                    //    UserContext.GetInstance().User.Taskss = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
+                    //}
+                    //_dbContext.Conn.Close();
                 }
                 catch (Exception ex)
                 {

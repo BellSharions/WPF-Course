@@ -90,12 +90,7 @@ namespace TasksArchive.ViewModel
                 return new DelegateCommand(() =>
                 {
                     Taskss = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
-                    Taskss.CollectionChanged += (s, e) =>
-                    {
-                        File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
-                    };
-                    BindingOperations.EnableCollectionSynchronization(Taskss, new object());
-                    TaskssView = CollectionViewSource.GetDefaultView(Taskss);
+                    
                     _dbContext.Conn.Open();
                     var command2 = _dbContext.Conn.CreateCommand();
                     command2.CommandText = "SELECT description FROM tasks where userID = @ID";
@@ -104,7 +99,7 @@ namespace TasksArchive.ViewModel
                     result.ReadAsync();
                         if (File.Exists("TaskssData.json"))
                             File.WriteAllText("TaskssData.json", result.GetString(0));
-                        UserContext.GetInstance().User.Taskss = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
+                        Taskss = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
                         _dbContext.Conn.Close();
                     _dbContext.Conn.Open();
                     var command3 = _dbContext.Conn.CreateCommand();
@@ -112,12 +107,7 @@ namespace TasksArchive.ViewModel
                     command3.Parameters.AddWithValue("@UserID", UserContext.GetInstance().User.Id);
                     command3.ExecuteNonQueryAsync();
                     _dbContext.Conn.Close();
-                    Taskss.CollectionChanged += (s, e) =>
-                    {
-                        File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
-                    };
-                    BindingOperations.EnableCollectionSynchronization(Taskss, new object());
-                    TaskssView = CollectionViewSource.GetDefaultView(Taskss);
+                    TaskssView.Refresh();
                 });
             }
         }
@@ -129,15 +119,16 @@ namespace TasksArchive.ViewModel
                 return new DelegateCommand(() =>
                 {
                     File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
-                    if(Taskss.LastOrDefault() != null)
-                    _dbContext.AddTask(Taskss.LastOrDefault());
                     _dbContext.Conn.Open();
                     var command2 = _dbContext.Conn.CreateCommand();
                     command2.CommandText = "UPDATE tasks SET Description = @desc where userID = @ID";
-                    command2.Parameters.AddWithValue("@desc", JsonConvert.SerializeObject(File.ReadAllText("TaskssData.json")));
+                    command2.Parameters.AddWithValue("@desc", File.ReadAllText("TaskssData.json"));
                     command2.Parameters.AddWithValue("@ID", UserContext.GetInstance().User.Id);
                     command2.ExecuteNonQueryAsync();
                     _dbContext.Conn.Close();
+
+                    TaskssView = CollectionViewSource.GetDefaultView(Taskss);
+                    TaskssView.Refresh();
                 });
             }
         }
@@ -167,6 +158,8 @@ namespace TasksArchive.ViewModel
                 return new DelegateCommand<Tasks>((Tasks) =>
                 {
                     Taskss.Remove(Tasks);
+
+                    File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
                     SelectedTasks = Taskss.FirstOrDefault();
 
                 }, (Tasks)=> Tasks != null);
@@ -190,8 +183,11 @@ namespace TasksArchive.ViewModel
                         MessageBox.Show("Введите данные");
                         return;
                     }
-                    File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
                     Taskss.Add(vm.TasksInfo);
+                    File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
+
+                    TaskssView = CollectionViewSource.GetDefaultView(Taskss);
+                    TaskssView.Refresh();
                 });
             }
         }

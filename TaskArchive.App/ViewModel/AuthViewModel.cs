@@ -117,11 +117,14 @@ namespace TaskArchive.App.ViewModel
                     _dbContext.Conn.Close();
                     _dbContext.Conn.Open();
                     var command3 = _dbContext.Conn.CreateCommand();
-                    command3.CommandText = $"SELECT Description FROM TASKS WHERE userID = '{UserContext.GetInstance().User.Id}';";
+                    command3.CommandText = "SELECT description FROM tasks where userID = @ID";
+                    command3.Parameters.AddWithValue("@ID", UserContext.GetInstance().User.Id);
                     var result3 = command3.ExecuteReaderAsync().Result;
                     while (result3.ReadAsync().Result)
                     {
-                        UserContext.GetInstance().User.Taskss = JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json"));
+                        if (File.Exists("TaskssData.json"))
+                            File.WriteAllText("TaskssData.json", result3.GetString(0));
+                        UserContext.GetInstance().User.Taskss = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
                     }
                     _dbContext.Conn.Close();
                 }

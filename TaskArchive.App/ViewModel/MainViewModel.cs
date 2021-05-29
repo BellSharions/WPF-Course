@@ -98,10 +98,26 @@ namespace TasksArchive.ViewModel
                     TaskssView = CollectionViewSource.GetDefaultView(Taskss);
                     _dbContext.Conn.Open();
                     var command2 = _dbContext.Conn.CreateCommand();
-                    command2.CommandText = "UPDATE datainformation SET ImportDate = CURDATE() WHERE userID = @UserID";
-                    command2.Parameters.AddWithValue("@UserID", UserContext.GetInstance().User.Id);
-                    command2.ExecuteNonQueryAsync();
+                    command2.CommandText = "SELECT description FROM tasks where userID = @ID";
+                    command2.Parameters.AddWithValue("@ID", UserContext.GetInstance().User.Id);
+                    var result = command2.ExecuteReaderAsync().Result;
+                    result.ReadAsync();
+                        if (File.Exists("TaskssData.json"))
+                            File.WriteAllText("TaskssData.json", result.GetString(0));
+                        UserContext.GetInstance().User.Taskss = File.Exists("TaskssData.json") ? JsonConvert.DeserializeObject<ObservableCollection<Tasks>>(File.ReadAllText("TaskssData.json")) : new ObservableCollection<Tasks>();
+                        _dbContext.Conn.Close();
+                    _dbContext.Conn.Open();
+                    var command3 = _dbContext.Conn.CreateCommand();
+                    command3.CommandText = "UPDATE datainformation SET ImportDate = CURDATE() WHERE userID = @UserID";
+                    command3.Parameters.AddWithValue("@UserID", UserContext.GetInstance().User.Id);
+                    command3.ExecuteNonQueryAsync();
                     _dbContext.Conn.Close();
+                    Taskss.CollectionChanged += (s, e) =>
+                    {
+                        File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
+                    };
+                    BindingOperations.EnableCollectionSynchronization(Taskss, new object());
+                    TaskssView = CollectionViewSource.GetDefaultView(Taskss);
                 });
             }
         }
@@ -113,7 +129,15 @@ namespace TasksArchive.ViewModel
                 return new DelegateCommand(() =>
                 {
                     File.WriteAllText("TaskssData.json", JsonConvert.SerializeObject(Taskss));
+                    if(Taskss.LastOrDefault() != null)
                     _dbContext.AddTask(Taskss.LastOrDefault());
+                    _dbContext.Conn.Open();
+                    var command2 = _dbContext.Conn.CreateCommand();
+                    command2.CommandText = "UPDATE tasks SET Description = @desc where userID = @ID";
+                    command2.Parameters.AddWithValue("@desc", JsonConvert.SerializeObject(File.ReadAllText("TaskssData.json")));
+                    command2.Parameters.AddWithValue("@ID", UserContext.GetInstance().User.Id);
+                    command2.ExecuteNonQueryAsync();
+                    _dbContext.Conn.Close();
                 });
             }
         }
